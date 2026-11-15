@@ -33,7 +33,8 @@ if args.quick:
     args.project = "fl-pathmnist-test"                  # keep the real project clean
 
 # Run name, e.g. fedavg_seed0 or fedprox_mu0.01_seed0
-name = f"fedavg_seed{args.seed}" if mu == 0 else f"fedprox_mu{mu}_seed{args.seed}"
+tag = "" if args.noise_rate == 0.4 else f"_noise{args.noise_rate}"   # mark control runs
+name = f"fedavg{tag}_seed{args.seed}" if mu == 0 else f"fedprox_mu{mu}{tag}_seed{args.seed}"
 if args.quick:
     name = "quick_" + name
 
