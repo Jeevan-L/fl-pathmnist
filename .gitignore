@@ -223,4 +223,3 @@ venv/
 data/
 wandb/
 *.npz
-results/*.png
