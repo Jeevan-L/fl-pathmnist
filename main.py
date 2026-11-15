@@ -45,9 +45,15 @@ gen = torch.Generator().manual_seed(args.seed)
 X_tr, y_tr, X_te, y_te = load_pathmnist(quick=args.quick, seed=args.seed)
 clients = make_clients(X_tr, y_tr, args.clients, args.alpha, args.seed,
                        args.noisy_client, args.noise_rate)
-x_test, y_test = to_tensor(X_te), torch.from_numpy(y_te).long()   # official test set
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("device:", device)
+for c in clients:                                  # move every client tensor to the GPU (if any)
+    for key in c:
+        c[key] = c[key].to(device)
+x_test = to_tensor(X_te).to(device)                # official test set
+y_test = torch.from_numpy(y_te).long().to(device)
 
-model = CNN()
+model = CNN().to(device)
 wandb.init(project=args.project, name=name, config=vars(args))
 
 rows = []

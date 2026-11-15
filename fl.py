@@ -27,7 +27,7 @@ def local_train(model, client, mu, lr, epochs, bs, gen):
     model.train()
     losses = []
     for _ in range(epochs):
-        perm = torch.randperm(len(y), generator=gen)       # shuffle each epoch
+        perm = torch.randperm(len(y), generator=gen).to(x.device)   # shuffle each epoch
         for i in range(0, len(y), bs):
             idx = perm[i:i + bs]
             ce = F.cross_entropy(model(x[idx]), y[idx])
